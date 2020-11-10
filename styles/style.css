@@ -24,6 +24,7 @@ table,td {
 }
 input[type="checkbox"]{
 margin: 5px;
+float: left;
 }
 .answer{
     max-width: 500px;

@@ -429,6 +429,15 @@ function doAggregation(group) {
                     //aqui se crean los promedios mas abajo se hace la desv estandar
                     valA += data;
                     break;
+                //Own Method
+                case 5:
+                    if (data < 4 ) {
+                        data = 1;
+                    }else if(data >= 10){
+                        data = 1;
+                    }
+                    valA += data;
+                    break;
             }
 
         }
@@ -445,8 +454,27 @@ function doAggregation(group) {
     if (aggregation.options.selectedIndex + 1 == 4) {
         protoUser = standDev(protoUser, group);
     }
+    if (aggregation.options.selectedIndex + 1 == 5) {
+        
+        protoUser = ownMethod(protoUser);
+    }
     createProtoPerson(protoUser);
 }
+
+function ownMethod(averages) {
+    let newAverages = [];
+    for (let i = 0; i < averages.length; i++) {
+        let num = parseFloat(averages[i]);
+        if(num <= 2.5){
+            num = "1";
+        }else{
+            num = (num).toFixed(1);
+        }
+        newAverages.push(num);
+    }
+    return newAverages;
+}
+
 function standDev(arrayUser, group) {
     let newArray = [];
     let sum = 0;
@@ -458,17 +486,16 @@ function standDev(arrayUser, group) {
             sum += Math.pow((data - average), 2);
         }
         //Poblacional sobre group.length, para muestra group.length-1 CAMBIAR AQUI
-        result = Math.sqrt((sum / (group.length-1)));
-        console.log(result);
+        result = Math.sqrt((sum / (group.length - 1)));
         newArray.push(result.toFixed(1));
         sum = 0;
     }
     //Si la DesvEstan es menor a 3 entonces pone el número en el min que es 1
     for (let j = 0; j < newArray.length; j++) {
-        if (newArray[j]< 3) {
+        if (newArray[j] <= 3) {
             newArray[j] = 1;
         }
-        
+
     }
     return newArray;
 }
@@ -476,14 +503,22 @@ function standDev(arrayUser, group) {
 //Sprint aggregation
 
 function createProtoPerson(array) {
-
+    
     table = "<table class='table'>";
+
     table += "<tr>";
+    for (i = 0; i < array.length+1; i++) {
+        table += "<th>";
+        table += dataBase[0][i];
+        table += "</th>";
+
+    }
+    table += "</tr>";
     table += "<th>";
-    table += "N-Protopersona";
+    table += "Playlist";
     table += "</th>";
     for (i = 0; i < array.length; i++) {
-
+       
         table += "<td>";
         table += array[i];
         table += "</td>";
