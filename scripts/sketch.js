@@ -492,7 +492,7 @@ function standDev(arrayUser, group) {
     }
     //Si la DesvEstan es menor a 3 entonces pone el número en el min que es 1
     for (let j = 0; j < newArray.length; j++) {
-        if (newArray[j] <= 3) {
+        if (newArray[j] >= 3) {
             newArray[j] = 1;
         }
 
