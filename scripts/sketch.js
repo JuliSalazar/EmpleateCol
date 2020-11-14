@@ -24,12 +24,16 @@ var aggregation = document.querySelector(".aggregation");
 var btnGroup = document.querySelector(".btn_group");
 
 //Variables sprint 6
+var btnPizzas = document.querySelector(".pizzas");
+var btnPersonas = document.querySelector(".personas");
 
+//btnPizzas.addEventListener('click', loadDataBase);
 
 //Funciones sprint 1
-send.addEventListener("change", loadDataBase, false);
+//send.addEventListener("change", loadDataBase, false);
 function loadDataBase() {
     const fileList = this.files;
+    //var file = fileList[0];
     var file = fileList[0];
     Papa.parse(file, {
         complete: function (results) {
@@ -38,6 +42,14 @@ function loadDataBase() {
         },
     });
 }
+/*
+Papa.parse('./datas/dataPersonas.csv', {
+	complete: function(results) {
+            dataBase = results.data;
+            createTable(dataBase);
+	}
+});*/
+
 function createTable(results) {
     table = "<table class='table'>";
     var selects = false;
