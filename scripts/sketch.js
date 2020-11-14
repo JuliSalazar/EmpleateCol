@@ -23,6 +23,8 @@ var dimensionsValues = [];
 var aggregation = document.querySelector(".aggregation");
 var btnGroup = document.querySelector(".btn_group");
 
+//Variables sprint 6
+
 
 //Funciones sprint 1
 send.addEventListener("change", loadDataBase, false);
@@ -490,7 +492,7 @@ function standDev(arrayUser, group) {
         newArray.push(result.toFixed(1));
         sum = 0;
     }
-    //Si la DesvEstan es menor a 3 entonces pone el número en el min que es 1
+    //Si la DesvEstan es mayor a 3 entonces pone el número en el min que es 1
     for (let j = 0; j < newArray.length; j++) {
         if (newArray[j] >= 3) {
             newArray[j] = 1;
