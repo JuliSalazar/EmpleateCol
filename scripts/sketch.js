@@ -74,12 +74,14 @@ btnPeople.addEventListener('click', showPeople);
 btnPizzas.addEventListener('click', showPizzas);
 //btnRecomend.addEventListener('click',similCosAll);
 
+//btnPizzas.addEventListener('click', loadDataBase);
 
 //Funciones sprint 1
 //send.addEventListener("change", loadDataBase, false);
 /*
 function loadDataBase() {
     const fileList = this.files;
+    //var file = fileList[0];
     var file = fileList[0];
     Papa.parse(file, {
         complete: function (results) {
@@ -87,7 +89,15 @@ function loadDataBase() {
             createTable(dataBase);
         },
     });
-}*/
+}
+/*
+Papa.parse('./datas/dataPersonas.csv', {
+	complete: function(results) {
+            dataBase = results.data;
+            createTable(dataBase);
+	}
+});*/
+
 function createTable(results) {
     table = "<table class='table'>";
     var selects = false;
