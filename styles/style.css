@@ -9,8 +9,7 @@
     font-weight: 50px;
   }
 body{
-    display: flex;
-    flex-direction: column;
+
     align-items: center;
     border-color: transparent;
 }
@@ -60,6 +59,9 @@ float: left;
 }
 .answer{
     max-width: 500px;
+}
+.btn_proto{
+    visibility: hidden;
 }
 button{
     margin: 15px;

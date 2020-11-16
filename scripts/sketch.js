@@ -24,10 +24,60 @@ var aggregation = document.querySelector(".aggregation");
 var btnGroup = document.querySelector(".btn_group");
 
 //Variables sprint 6
+var dataBasePeople;
+var btnPeople = document.querySelector(".btn_people");
+var btnPizzas = document.querySelector(".btn_pizzas");
+
+var mainDataBase;
+var otherDataBase;
+
+//Cargar bases de datos previamente
+Papa.parse("datas/dataPizzas.csv", {
+    download: true,
+    complete: function (results) {
+         dataBase = results.data;   
+    },
+
+});
+Papa.parse("datas/dataPersonas.csv", {
+    download: true,
+    complete: function (results) {
+        dataBasePeople = results.data;
+    },
+});
+function resetMainDb(db) {
+    mainDataBase = db;
+    if(mainDataBase == dataBasePeople){
+        otherDataBase = dataBase;
+    }else{
+        otherDataBase = dataBasePeople;
+    }
+}
+
+
+function showPizzas() {
+    createTable(dataBase);
+    resetMainDb(dataBase);
+    btnProto.style.visibility='visible';
+}
+function showPeople() {
+    createTable(dataBasePeople);
+    resetMainDb(dataBasePeople);
+    btnProto.style.visibility='visible';
+}
+
+    
+var btnProto = document.querySelector(".btn_proto");
+var btnRecomend = document.querySelector(".btn_recomend");
+btnProto.addEventListener('click', createGroup); 
+btnPeople.addEventListener('click', showPeople);
+btnPizzas.addEventListener('click', showPizzas);
+//btnRecomend.addEventListener('click',similCosAll);
 
 
 //Funciones sprint 1
-send.addEventListener("change", loadDataBase, false);
+//send.addEventListener("change", loadDataBase, false);
+/*
 function loadDataBase() {
     const fileList = this.files;
     var file = fileList[0];
@@ -37,7 +87,7 @@ function loadDataBase() {
             createTable(dataBase);
         },
     });
-}
+}*/
 function createTable(results) {
     table = "<table class='table'>";
     var selects = false;
@@ -81,8 +131,8 @@ function createTable(results) {
     }
     table += "</table>";
     $("#parsed-list").html(table);
-    createOpc();
-    createKValues();
+   // createOpc();
+    createKValues(results);
 }
 //Funcion en botones sprint 1
 function sortA() {
@@ -147,8 +197,8 @@ function createOpc() {
 
     }
 }
-function createKValues() {
-    for (let i = 1; i < dataBase.length - 1; i++) {
+function createKValues(db) {
+    for (let i = 1; i < db.length - 1; i++) {
         var val = document.createElement("option");
         val.innerHTML = i;
         val.value = Object.values(i);
@@ -156,15 +206,15 @@ function createKValues() {
     }
 }
 //Calculo similitud coseno de todos los valores
-function similCosAll() {
+function similCosAll(protoUser) {
     //Sacar información de los datos pedidos
-    var index1 = selName1.options.selectedIndex;
-    var user1 = [];
+    //var index1 = selName1.options.selectedIndex;
+    var user1 = protoUser;
     var user2 = [];
     var contador = 1;
     var similCos = [];
-
-    var dimensions = dataBase[0];
+    /*
+    var dimensions = otherDataBase[0];
     var individualDimendions = dimensions.join(",").split(",");
 
     if (dimensionsValues.length > 0) {
@@ -177,13 +227,14 @@ function similCosAll() {
         dimensionsValues.push(value);
     }
 
-    for (let i = 0; i < dataBase[index1 + 1].length - 1; i++) {
+    for (let i = 0; i < db[index1 + 1].length - 1; i++) {
         //Todos los valores del usuario elegido
-        user1[i] = dataBase[index1 + 1][i + 1];
-    }
-    for (let fil = 1; fil < dataBase.length; fil++) {
-        for (let i = 0; i < dataBase[contador].length - 1; i++) {
-            user2[i] = dataBase[contador][i + 1];
+        user1[i] = db[index1 + 1][i + 1];
+    }*/
+    
+    for (let fil = 1; fil < otherDataBase.length; fil++) {
+        for (let i = 0; i < otherDataBase[contador].length - 1; i++) {
+            user2[i] = otherDataBase[contador][i + 1];
 
         }
         //Producto punto
@@ -198,8 +249,8 @@ function similCosAll() {
 
 
         for (let i = 0; i < user1.length; i++) {
-            var valueAplicated = parseFloat(user1[i]) * dimensionsValues[i];
-            valA = parseFloat(valueAplicated);
+           // var valueAplicated = parseFloat(user1[i]) * dimensionsValues[i];
+            valA = parseFloat(user1[i]);
             valB = parseFloat(user2[i]);
 
             prodPunt += (valA * valB);
@@ -211,17 +262,16 @@ function similCosAll() {
 
 
 
-        if (dataBase[contador][0] != dataBase[index1 + 1][0]) {
-            similCos.push([dataBase[contador][0], (prodPunt / (magA * magB)).toFixed(4)]);
+        //if (otherDataBase[contador][0] != otherDataBase[index1 + 1][0]) {
+            similCos.push([otherDataBase[contador][0], (prodPunt / (magA * magB)).toFixed(4)]);
             user2 = [];
-        }
-        console.log(similCos.length);
+       // }
         contador += 1;
     }
 
-    resp.innerHTML = "La similitud coseno de " + dataBase[index1 + 1][0] + " y las demás personas es de: ";
+   // resp.innerHTML = "La similitud coseno de " + otherDataBase[index1 + 1][0] + " y las demás personas es de: ";
     createTableSimil(similCos);
-    drawCircles(similCos, dataBase[index1 + 1][0]);
+    drawCircles(similCos, protoUser);
 
     //graphicPart(similCos,dataBase[index1 + 1][0]);
 }
@@ -310,7 +360,7 @@ var imgOther;
 function setup() {
     var canvas = createCanvas(500, 400);
     canvas.parent('graphic');
-    img = loadImage('./src/chosen.png');
+    img = loadImage('../src/chosen.png');
     imgOther = loadImage('../src/other.png');
 }
 
@@ -318,9 +368,10 @@ function drawCircles(array, user) {
     var canva = document.getElementById("defaultCanvas0");
     var kval = kValue.options.selectedIndex + 1;
     var radius = 50;
-    var centerX = canva.width / 2;
-    var centerY = canva.height / 2;
+    var centerX = canva.width/2;
+    var centerY = canva.height/2;
     var f = Math.PI / kval * 2;
+    console.log(canva);
     var tam = 20;
     canva.style.display = 'block';
     background(255);
@@ -349,8 +400,8 @@ function drawCircles(array, user) {
         image(imgOther, x, y, tam, tam);
     }
     fill(255, 87, 51);
-    var username = user.split(" ")[0] + '\n' + user.split(" ")[1]
-    text(username, centerX - 20, centerY + 30);
+    //var username = user.split(" ")[0] + '\n' + user.split(" ")[1]
+    text("proto", centerX - 20, centerY + 30);
     image(img, centerX, centerY, tam, tam);
     //ellipse(centerX, centerY, 30, 30);
 
@@ -363,19 +414,22 @@ function createGroup() {
     let checked = document.querySelectorAll('input[type=checkbox]:checked');
     for (let i = 0; i < checked.length; i++) {
         const index = checked[i].value;
-        for (let fil = 1; fil < dataBase.length; fil++) {
-            arrayUsers[i] = dataBase[index];
+        for (let fil = 1; fil < mainDataBase.length; fil++) {
+            arrayUsers[i] = mainDataBase[index];
         }
     }
-    createTableGroup(arrayUsers);
-    doAggregation(arrayUsers);
+    if(arrayUsers.length > 0){
+        createTableGroup(arrayUsers);
+        doAggregation(arrayUsers);
+       
+    }
 }
 function createTableGroup(array) {
     table = "<table class='table'>";
     table += "<tr>";
     for (let k = 0; k < array[1].length; k++) {
         table += "<th>";
-        table += dataBase[0][k];
+        table += mainDataBase[0][k];
         table += "</th>";
 
     }
@@ -433,9 +487,9 @@ function doAggregation(group) {
                     break;
                 //Own Method
                 case 5:
-                    if (data < 4 ) {
+                    if (data < 4) {
                         data = 1;
-                    }else if(data >= 10){
+                    } else if (data >= 10) {
                         data = 1;
                     }
                     valA += data;
@@ -457,19 +511,20 @@ function doAggregation(group) {
         protoUser = standDev(protoUser, group);
     }
     if (aggregation.options.selectedIndex + 1 == 5) {
-        
+
         protoUser = ownMethod(protoUser);
     }
     createProtoPerson(protoUser);
+    similCosAll(protoUser);
 }
 
 function ownMethod(averages) {
     let newAverages = [];
     for (let i = 0; i < averages.length; i++) {
         let num = parseFloat(averages[i]);
-        if(num <= 2.5){
+        if (num <= 2.5) {
             num = "1";
-        }else{
+        } else {
             num = (num).toFixed(1);
         }
         newAverages.push(num);
@@ -481,6 +536,7 @@ function standDev(arrayUser, group) {
     let newArray = [];
     let sum = 0;
     let result = 0;
+    console.log(arrayUser);
     for (let col = 1; col < group[0].length; col++) {
         for (let fil = 0; fil < group.length; fil++) {
             const data = parseFloat(group[fil][col]);
@@ -492,9 +548,14 @@ function standDev(arrayUser, group) {
         newArray.push(result.toFixed(1));
         sum = 0;
     }
+    console.log(newArray);
     //Si la DesvEstan es mayor a 3 entonces pone el número en el min que es 1
     for (let j = 0; j < newArray.length; j++) {
-        if (newArray[j] >= 3) {
+        var average = parseFloat(arrayUser[j]);
+        var stanD = parseFloat(newArray[j]);
+        if (stanD <= 2.5 && average >= 7.7) {
+            newArray[j] = 10;
+        }else{
             newArray[j] = 1;
         }
 
@@ -505,22 +566,22 @@ function standDev(arrayUser, group) {
 //Sprint aggregation
 
 function createProtoPerson(array) {
-    
+
     table = "<table class='table'>";
 
     table += "<tr>";
-    for (i = 0; i < array.length+1; i++) {
+    for (i = 0; i < array.length + 1; i++) {
         table += "<th>";
-        table += dataBase[0][i];
+        table += mainDataBase[0][i];
         table += "</th>";
 
     }
     table += "</tr>";
     table += "<th>";
-    table += "Playlist";
+    table += "Protopersona";
     table += "</th>";
     for (i = 0; i < array.length; i++) {
-       
+
         table += "<td>";
         table += array[i];
         table += "</td>";
@@ -531,8 +592,9 @@ function createProtoPerson(array) {
 }
 
 //calculate.addEventListener('click', similCos);
-calculate.addEventListener('click', similCosAll);
-btnGroup.addEventListener('click', createGroup);
+//calculate.addEventListener('click', similCosAll();
+
+//btnGroup.addEventListener('click', createGroup(mainDataBase));
 //asc.addEventListener('click', sortA);
 //desc.addEventListener('click', sortD);
 

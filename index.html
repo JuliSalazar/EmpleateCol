@@ -14,10 +14,12 @@
         <label for="files">Carga tus datos .CSV:</label>
         <input type="file" id="files" accept=".csv" required>
     </div> -->
-
+    <button class="btn_people">Ver personas</button>
+    <button class="btn_pizzas">Ver pizzas</button>
     <div id="parsed-list"></div>
     <div id="groupP"></div>
     <div id="protoPerson"></div>
+    
     <div class="to-order">
         <select class="set-col">
         </select>
@@ -25,12 +27,11 @@
         <button class="btn_asc">Orden ascendente</button>
         <button class="btn_desc">Orden descendente</button>
     </div>
-
-    <h3>Los valores "1" en la Protopersona indican que no se añade esa categoría</h3>
-
+    <button class="btn_proto">Crear Proto</button>
     <div class="cont">
-        <select class="list1">
-        </select>
+        <!--<select class="list1">
+        </select>-->
+        <h3>¿Cuántas recomendaciones?</h3>
         <select class="k">
         </select>
         <select class="aggregation">
@@ -48,15 +49,16 @@
                     <div id="simil-list"></div>
                     <div id="graphic"></div>
                 </section>
-        <button class="btn_calc">Calcular</button>
-        <button class="btn_group">Crear protopersona</button>
+        <!-- <button class="btn_calc">Calcular</button>
+        <button class="btn_group">Crear protopersona</button> -->
+        
         <ul class="list-simil"></ul>
     </div>
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
 <script src="http://papaparse.com/resources/js/papaparse.js"></script>
-<script src="./scripts/sketch.js"></script>
 <script src="./libs/p5.js"></script>
+<script src="./scripts/sketch.js"></script>
 <script src="./libs/jquery.js"></script>
 </html>
