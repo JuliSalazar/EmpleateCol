@@ -486,7 +486,7 @@ function doAggregation(group) {
                 //Caso MaximunPleasure
                 case 3:
                     if (data <= 8) {
-                        data = "null";
+                        data = 1;
                     }
                     valA += data;
                     break;
@@ -508,14 +508,25 @@ function doAggregation(group) {
 
         }
         prom = (valA / (group.length));
-        protoUser[col - 1] = prom.toFixed(1);
+        protoUser[col - 1] = prom.toFixed(0);
         valA = 0;
     }
+    console.log(protoUser);
     for (let j = 0; j < protoUser.length; j++) {
         if (protoUser[j] == "NaN") {
             protoUser[j] = "1";
         }
     }
+
+    if (aggregation.options.selectedIndex + 1 == 3) {
+        for (let j = 0; j < protoUser.length; j++) {
+            d = parseFloat(protoUser[j]);
+            if (d >= 2.9) {
+                protoUser[j] = "10";
+            }
+        }
+    }
+
     //Desviacion estandar
     if (aggregation.options.selectedIndex + 1 == 4) {
         protoUser = standDev(protoUser, group);
