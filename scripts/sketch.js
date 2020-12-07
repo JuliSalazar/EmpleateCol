@@ -402,7 +402,8 @@ function drawCircles(array, user) {
     console.log(canva);
     var tam = 20;
     canva.style.display = 'block';
-    background(255);
+    background(255,10);
+    clear();
     noStroke();
     var lista = [];
     for (let i = 1; i <= kval; i++) {
