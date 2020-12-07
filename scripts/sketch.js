@@ -389,7 +389,7 @@ function setup() {
     var canvas = createCanvas(500, 300);
     canvas.parent('graphic');
     img = loadImage('./src/chosen.png');
-    imgOther = loadImage('./src/other.png';
+    imgOther = loadImage('./src/other.png');
 }
 
 function drawCircles(array, user) {
