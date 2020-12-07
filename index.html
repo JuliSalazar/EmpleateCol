@@ -9,51 +9,58 @@
 </head>
 
 <body>
-<!--
-    <div class="up-file">
-        <label for="files">Carga tus datos .CSV:</label>
-        <input type="file" id="files" accept=".csv" required>
-    </div> -->
-    <button class="btn_people">Ver personas</button>
-    <button class="btn_pizzas">Ver pizzas</button>
-    <div id="parsed-list"></div>
-    <div id="groupP"></div>
-    <div id="protoPerson"></div>
-    
-    <div class="to-order">
-        <select class="set-col">
-        </select>
 
-        <button class="btn_asc">Orden ascendente</button>
-        <button class="btn_desc">Orden descendente</button>
-    </div>
-    <button class="btn_proto">Crear Proto</button>
-    <div class="cont">
-        <!--<select class="list1">
-        </select>-->
-        <h3>¿Cuántas recomendaciones?</h3>
-        <select class="k">
-        </select>
-        <select class="aggregation">
-            <option value="nA">Naive Average</option>
-            <option value="lM">Least Misery</option>
-            <option value="mP">Maximun Pleasure</option>
-            <option value="mS">Media Satifacción</option>
-            <option value="jM">Juls Method</option>
-        </select>
-       <!-- <select class="list2">
-        </select> -->
-        <h3 class="title">Similitud Coseno:</h1>
-            <h4 class="answer"></h2>
-                <section class="answer-section">
-                    <div id="simil-list"></div>
-                    <div id="graphic"></div>
-                </section>
-        <!-- <button class="btn_calc">Calcular</button>
-        <button class="btn_group">Crear protopersona</button> -->
-        
-        <ul class="list-simil"></ul>
-    </div>
+    <main class="banner">
+        <section class="initial">
+            <h1>¡Encuentra recomendaciones!</h1>
+            <div class="info">
+                <div class="bannerInfo">
+                    <h2>La pizza ideal</h2>
+                    <p>Podrás seleccionar personas y se recomendarán pizzas de acuerdo a sus gustos</p>
+                    <button class="btn_people">Ver personas</button>
+                </div>
+                <div class="bannerInfo">
+                    <h2>Las personas ideales</h2>
+                    <p>Podrás seleccionar pizzas y se recomendarán personas de acuerdo a sus ingredientes</p>
+                    <button class="btn_pizzas">Ver pizzas</button>
+                </div>
+            </div>
+        </section>
+         <section class="view">
+             <div class="partOne">
+                <div id="parsed-list"></div>
+                    <h3>¿Cuántas recomendaciones?</h3>
+                    <div>
+                        <select class="k"></select>
+                        <select class="aggregation">
+                            <option value="nA">Naive Average</option>
+                            <option value="lM">Least Misery</option>
+                            <option value="mP">Maximun Pleasure</option>
+                            <option value="mS">Media Satifacción</option>
+                            <option value="jM">Juls Method</option>
+                        </select>
+                    </div>
+                   
+                    <button class="btn_proto">Crear Proto</button>
+             </div>
+             <div class="partTwo">
+                <div id="groupP"></div>
+                <div id="protoPerson"></div>
+                <h3 class="title">Similitud Coseno:</h1>
+                    <h4 class="answer"></h2>
+                        <section class="answer-section">
+                            <div id="simil-list"></div>
+                            <div id="graphic"></div>
+                        </section>
+                <!-- <button class="btn_calc">Calcular</button>
+                <button class="btn_group">Crear protopersona</button> -->
+                
+                <ul class="list-simil"></ul>
+             </div>
+            
+         </section>
+    </main>
+  
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>

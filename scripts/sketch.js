@@ -31,6 +31,11 @@ var btnPizzas = document.querySelector(".btn_pizzas");
 var mainDataBase;
 var otherDataBase;
 
+
+var sectionInitial = document.querySelector(".initial");
+var sectionView = document.querySelector(".view");
+var banner = document.querySelector(".banner");
+
 //Cargar bases de datos previamente
 Papa.parse("datas/dataPizzas.csv", {
     download: true,
@@ -59,11 +64,18 @@ function showPizzas() {
     createTable(dataBase);
     resetMainDb(dataBase);
     btnProto.style.visibility='visible';
+    sectionInitial.style.display='none';
+    sectionView.style.display='flex';
+
 }
 function showPeople() {
     createTable(dataBasePeople);
     resetMainDb(dataBasePeople);
     btnProto.style.visibility='visible';
+    sectionInitial.style.display='none';
+    sectionView.style.display='flex';
+    
+    
 }
 
     
@@ -105,14 +117,20 @@ function createTable(results) {
         table += "<tr>";
         var row = results[i];
         cells = row.join(",").split(",");
-        for (j = 0; j < cells.length; j++) {
+        if (i == 0) {
+            var etiq = "th"
+
+        } else {
+            var etiq = "td"
+        }
+       /* for (j = 0; j < cells.length; j++) {
             if (i == 0) {
                 var etiq = "th"
 
             } else {
                 var etiq = "td"
             }
-
+/*
             if (!selects && j != 0) {
                 table += "<div class='valueMainContainer'>";
                 for (let k = 1; k < cells.length; k++) {
@@ -130,13 +148,13 @@ function createTable(results) {
                 selects = true;
             }
 
-            table += "<" + etiq + ">";
-            table += cells[j];
-            if (j == 0 && i >= 1) {
+           */ table += "<" + etiq + ">";
+            table += cells[0];
+            if (i >= 1) {
                 table += "<input type='checkbox' id='cbox" + i + "' value=" + i + ">"
             }
             table += "</" + etiq + ">";
-        }
+        //}
         table += "</tr>";
     }
     table += "</table>";
@@ -368,7 +386,7 @@ function graphicPart(array, user) {
 var img;
 var imgOther;
 function setup() {
-    var canvas = createCanvas(500, 400);
+    var canvas = createCanvas(500, 300);
     canvas.parent('graphic');
     img = loadImage('../src/chosen.png');
     imgOther = loadImage('../src/other.png');
@@ -393,8 +411,8 @@ function drawCircles(array, user) {
     }
     imageMode(CENTER);
     for (let i = 0; i < kval; i++) {
-
-        var name = array[i][0].split(" ")[0] + '\n' + array[i][0].split(" ")[1];
+        // + '\n' + array[i][0].split(" ")[1]
+        var name = array[i][0].split(" ")[0] ;
         /*Aleatorio
         let x = (radius + (array[i][1] * i)*10) * Math.cos(lista[i-1] * f) + centerX;
         let y = (radius + (array[i][1] * i)*10) * Math.sin(lista[i-1]  * f) + centerY;*/
@@ -420,6 +438,7 @@ var divProto = document.getElementById("protoPerson");
 
 
 function createGroup() {
+    banner.style.width='fit-content';
     var arrayUsers = [];
     let checked = document.querySelectorAll('input[type=checkbox]:checked');
     for (let i = 0; i < checked.length; i++) {
@@ -497,10 +516,8 @@ function doAggregation(group) {
                     break;
                 //Own Method
                 case 5:
-                    if (data < 4) {
-                        data = 1;
-                    } else if (data >= 10) {
-                        data = 1;
+                    if (data < 5) {
+                        data = "null";
                     }
                     valA += data;
                     break;
@@ -543,10 +560,10 @@ function ownMethod(averages) {
     let newAverages = [];
     for (let i = 0; i < averages.length; i++) {
         let num = parseFloat(averages[i]);
-        if (num <= 2.5) {
+        if (num <= 6.0) {
             num = "1";
-        } else {
-            num = (num).toFixed(1);
+        } else if (num > 6.0){
+            num = 10;
         }
         newAverages.push(num);
     }
@@ -599,7 +616,7 @@ function createProtoPerson(array) {
     }
     table += "</tr>";
     table += "<th>";
-    table += "Protopersona";
+    table += "Proto";
     table += "</th>";
     for (i = 0; i < array.length; i++) {
 

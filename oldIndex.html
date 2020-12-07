@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/style.css">
+    <title>Recomendaciones</title>
+</head>
+
+<body>
+<!--
+    <div class="up-file">
+        <label for="files">Carga tus datos .CSV:</label>
+        <input type="file" id="files" accept=".csv" required>
+    </div> 
+    <button class="btn_people">Ver personas</button>
+    <button class="btn_pizzas">Ver pizzas</button>-->
+    <div id="parsed-list"></div>
+    <div id="groupP"></div>
+    <div id="protoPerson"></div>
+    
+    <div class="to-order">
+        <select class="set-col">
+        </select>
+
+        <button class="btn_asc">Orden ascendente</button>
+        <button class="btn_desc">Orden descendente</button>
+    </div>
+    <button class="btn_proto">Crear Proto</button>
+    <div class="cont">
+        <!--<select class="list1">
+        </select>-->
+        <h3>¿Cuántas recomendaciones?</h3>
+        <select class="k">
+        </select>
+        <select class="aggregation">
+            <option value="nA">Naive Average</option>
+            <option value="lM">Least Misery</option>
+            <option value="mP">Maximun Pleasure</option>
+            <option value="mS">Media Satifacción</option>
+            <option value="jM">Juls Method</option>
+        </select>
+       <!-- <select class="list2">
+        </select> -->
+        <h3 class="title">Similitud Coseno:</h1>
+            <h4 class="answer"></h2>
+                <section class="answer-section">
+                    <div id="simil-list"></div>
+                    <div id="graphic"></div>
+                </section>
+        <!-- <button class="btn_calc">Calcular</button>
+        <button class="btn_group">Crear protopersona</button> -->
+        
+        <ul class="list-simil"></ul>
+    </div>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
+<script src="http://papaparse.com/resources/js/papaparse.js"></script>
+<script src="./libs/p5.js"></script>
+<script src="./scripts/sketch.js"></script>
+<script src="./libs/jquery.js"></script>
+</html>
