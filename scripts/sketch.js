@@ -232,7 +232,7 @@ function createOpc() {
     }
 }
 function createKValues(db) {
-    for (let i = 1; i < db.length - 1; i++) {
+    for (let i = 1; i < db.length; i++) {
         var val = document.createElement("option");
         val.innerHTML = i;
         val.value = Object.values(i);
@@ -372,14 +372,25 @@ function createTableSimil(array) {
 
        
 
-        table += "<th>";
-        table += array[i][0];
+       // Empresa
+
+        if(array[i][2].split(";")[2] != undefined){
+            table += "<th>";
+            table += "<a href="+ array[i][2].split(";")[2] +">" + array[i][0] + "</a>";
+          
+            //table += array[i][2].split(";")[1];
+        }else{
+            table += "<th>";
+            table += array[i][0];
+        }
         table += "</th>";
+        
+        //Similitud coseno
         table += "<td>";
         table += array[i][1];
         table += "</td>";
 
-        //para cursos
+        //Cursos
        
         if(array[i][2].split(";")[1] != undefined){
             table += "<td>";
@@ -623,8 +634,8 @@ function standDev(arrayUser, group) {
     let newArray = [];
     let sum = 0;
     let result = 0;
-    console.log(arrayUser);
-    for (let col = 1; col < group[0].length; col++) {
+    console.log(group);
+    for (let col = 1; col < group[0].length-1; col++) {
         for (let fil = 0; fil < group.length; fil++) {
             const data = parseFloat(group[fil][col]);
             var average = parseFloat(arrayUser[col - 1]);
@@ -640,7 +651,7 @@ function standDev(arrayUser, group) {
     for (let j = 0; j < newArray.length; j++) {
         var average = parseFloat(arrayUser[j]);
         var stanD = parseFloat(newArray[j]);
-        if (stanD <= 2.5 && average >= 7.7) {
+        if (stanD <= 2.5 && average >= 7) {
             newArray[j] = 10;
         }else{
             newArray[j] = 1;
