@@ -30,21 +30,21 @@ var btnPizzas = document.querySelector(".btn_pizzas");
 
 var mainDataBase;
 var otherDataBase;
-
+var company = false;
 
 var sectionInitial = document.querySelector(".initial");
 var sectionView = document.querySelector(".view");
 var banner = document.querySelector(".banner");
 
 //Cargar bases de datos previamente
-Papa.parse("datas/dataPizzas.csv", {
+Papa.parse("datas/Base de datos_Empresas.csv", {
     download: true,
     complete: function (results) {
          dataBase = results.data;   
     },
 
 });
-Papa.parse("datas/dataPersonas.csv", {
+Papa.parse("datas/Base de datos_Personas.csv", {
     download: true,
     complete: function (results) {
         dataBasePeople = results.data;
@@ -60,13 +60,15 @@ function resetMainDb(db) {
 }
 
 
-function showPizzas() {
+function showCompanies() {
     createTable(dataBase);
     resetMainDb(dataBase);
     btnProto.style.visibility='visible';
     sectionInitial.style.display='none';
     sectionView.style.display='flex';
-
+    company = true;
+    img = loadImage('./src/empresaIcon.png');
+        imgOther = loadImage('./src/personaIcon.png');
 }
 function showPeople() {
     createTable(dataBasePeople);
@@ -74,7 +76,8 @@ function showPeople() {
     btnProto.style.visibility='visible';
     sectionInitial.style.display='none';
     sectionView.style.display='flex';
-    
+    imgOther = loadImage('./src/empresaIcon.png');
+        img = loadImage('./src/personaIcon.png');
     
 }
 
@@ -83,7 +86,7 @@ var btnProto = document.querySelector(".btn_proto");
 var btnRecomend = document.querySelector(".btn_recomend");
 btnProto.addEventListener('click', createGroup); 
 btnPeople.addEventListener('click', showPeople);
-btnPizzas.addEventListener('click', showPizzas);
+btnPizzas.addEventListener('click', showCompanies);
 //btnRecomend.addEventListener('click',similCosAll);
 
 //btnPizzas.addEventListener('click', loadDataBase);
@@ -113,9 +116,11 @@ Papa.parse('./datas/dataPersonas.csv', {
 function createTable(results) {
     table = "<table class='table'>";
     var selects = false;
+    
     for (i = 0; i < results.length; i++) {
         table += "<tr>";
         var row = results[i];
+        
         cells = row.join(",").split(",");
         if (i == 0) {
             var etiq = "th"
@@ -150,6 +155,7 @@ function createTable(results) {
 
            */ table += "<" + etiq + ">";
             table += cells[0];
+           
             if (i >= 1) {
                 table += "<input type='checkbox' id='cbox" + i + "' value=" + i + ">"
             }
@@ -291,7 +297,7 @@ function similCosAll(protoUser) {
 
 
         //if (otherDataBase[contador][0] != otherDataBase[index1 + 1][0]) {
-            similCos.push([otherDataBase[contador][0], (prodPunt / (magA * magB)).toFixed(4)]);
+            similCos.push([otherDataBase[contador][0], (prodPunt / (magA * magB)).toFixed(4), otherDataBase[contador][11] ]);
             user2 = [];
        // }
         contador += 1;
@@ -352,20 +358,49 @@ function createTableSimil(array) {
     var kval = kValue.options.selectedIndex + 1;
     table = "<table class='table'>";
     table += "<tr>";
+    table += "<th>";
+    table += otherDataBase[0][0];
+    table += "</th>";
+    table += "<th>" + "Afinidad" + "</th>";
+    table += "<th>";
+    table += otherDataBase[0][11];
+    table += "</th>";
+    table += "</tr>";
+    console.log(otherDataBase);
     for (i = 0; i < kval; i++) {
         table += "<tr>";
+
+       
+
         table += "<th>";
         table += array[i][0];
         table += "</th>";
         table += "<td>";
         table += array[i][1];
         table += "</td>";
+
+        //para cursos
+       
+        if(array[i][2].split(";")[1] != undefined){
+            table += "<td>";
+            table += "<a href="+ array[i][2].split(";")[1] +">" + array[i][2].split(";")[0] + "</a>";
+          
+            //table += array[i][2].split(";")[1];
+        }else{
+            table += "<td>";
+            table += array[i][2];
+        }
+        
+        table += "</td>";
+
         table += "</tr>";
 
     }
     table += "</table>";
     $("#simil-list").html(table);
+
 }
+         
 function graphicPart(array, user) {
     var kval = kValue.options.selectedIndex + 1;
     cod = "<div class='graphic-part'>";
@@ -386,21 +421,27 @@ function graphicPart(array, user) {
 var img;
 var imgOther;
 function setup() {
-    var canvas = createCanvas(500, 300);
+    var canvas = createCanvas(800, 450);
     canvas.parent('graphic');
-    img = loadImage('./src/chosen.png');
-    imgOther = loadImage('./src/other.png');
+    /*if(company){
+        img = loadImage('./src/empresaIcon.png');
+        imgOther = loadImage('./src/personaIcon.png');
+    }else{
+        imgOther = loadImage('./src/empresaIcon.png');
+        img = loadImage('./src/personaIcon.png');
+    }*/
 }
+    
+    
 
 function drawCircles(array, user) {
     var canva = document.getElementById("defaultCanvas0");
     var kval = kValue.options.selectedIndex + 1;
-    var radius = 50;
+    var radius = canva.height/4;
     var centerX = canva.width/2;
-    var centerY = canva.height/2;
+    var centerY = canva.height/2 +30;
     var f = Math.PI / kval * 2;
-    console.log(canva);
-    var tam = 20;
+    var tam = 40;
     canva.style.display = 'block';
     background(255,10);
     clear();
@@ -410,27 +451,34 @@ function drawCircles(array, user) {
         lista.push(i);
         lista.sort(function () { return Math.random() - 0.5 });
     }
+    textAlign(CENTER);
     imageMode(CENTER);
     for (let i = 0; i < kval; i++) {
+        var name;
         // + '\n' + array[i][0].split(" ")[1]
-        var name = array[i][0].split(" ")[0] ;
+        if (array[i][0].split(" ")[1] != undefined) {
+            
+             name = array[i][0].split(" ")[0] + " " + array[i][0].split(" ")[1];
+        }else{
+            name = array[i][0].split(" ")[0] ;
+        }
         /*Aleatorio
         let x = (radius + (array[i][1] * i)*10) * Math.cos(lista[i-1] * f) + centerX;
         let y = (radius + (array[i][1] * i)*10) * Math.sin(lista[i-1]  * f) + centerY;*/
         //Ordenado
-        let x = (radius + (array[i][1] * i) * 10) * Math.cos(i * f) + centerX;
-        let y = (radius + (array[i][1] * i) * 10) * Math.sin(i * f) + centerY;
+        let x = (radius + (array[i][1] * i) *10) * Math.cos(i * f) + centerX;
+        let y = (radius + (array[i][1] * i) *10) * Math.sin(i * f) + centerY;
         stroke(218);
-        line(x, y, centerX, centerY);
+        line(x, y,centerX, centerY);
         noStroke();
-        fill(60, 60, 60);
-        text(name, x - 20, y + 30);
+        fill(255);
+        text(name, x, y+tam-10);
         //ellipse(x, y, tam, tam);
         image(imgOther, x, y, tam, tam);
     }
-    fill(255, 87, 51);
+    
     //var username = user.split(" ")[0] + '\n' + user.split(" ")[1]
-    text("proto", centerX - 20, centerY + 30);
+    text("Selección", centerX, centerY+tam-10);
     image(img, centerX, centerY, tam, tam);
     //ellipse(centerX, centerY, 30, 30);
 
@@ -448,16 +496,16 @@ function createGroup() {
             arrayUsers[i] = mainDataBase[index];
         }
     }
-    if(arrayUsers.length > 0){
+    //if(arrayUsers.length > 0){
         createTableGroup(arrayUsers);
         doAggregation(arrayUsers);
-       
-    }
+   
+    //}
 }
 function createTableGroup(array) {
     table = "<table class='table'>";
     table += "<tr>";
-    for (let k = 0; k < array[1].length; k++) {
+    for (let k = 0; k < array[0].length-1; k++) {
         table += "<th>";
         table += mainDataBase[0][k];
         table += "</th>";
@@ -470,7 +518,7 @@ function createTableGroup(array) {
         table += array[i][0];
         table += "</th>";
 
-        for (let j = 1; j < array[1].length; j++) {
+        for (let j = 1; j < array[0].length-1; j++) {
 
             table += "<td>";
             table += array[i][j];
@@ -488,7 +536,7 @@ function doAggregation(group) {
     let valA = 0;
     let prom = 0;
 
-    for (let col = 1; col < group[1].length; col++) {
+    for (let col = 1; col < group[0].length-1; col++) {
         for (let fil = 0; fil < group.length; fil++) {
             var data = parseFloat(group[fil][col]);
             switch (aggregation.options.selectedIndex + 1) {
